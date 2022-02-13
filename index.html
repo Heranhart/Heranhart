@@ -42,7 +42,7 @@
     <label for="inputCrit">Starting Crit</label> <input type="number" id="inputCrit" onblur="addInput('crit',this)"/><Br/>
     <label for="inputDCrit">Crit variation</label> <input type="number" id="inputDCrit" onblur="addInput('dcrit',this)"/><Br/>
     <label for="inputCritDmg">Critical damage (2 for classes without passives) </label> <input type="number" id="inputCritDmg" value="2" onblur="addInput('critdmg',this)"/><Br/>
-    <button onclick="print('inputCritDmg')">Run</button>
+    <button onclick='run()'>Run</button>
     <output id="outputResult" hidden="true" type="text"/>
     <select>
         <option></option>

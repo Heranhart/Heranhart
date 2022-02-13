@@ -117,35 +117,43 @@
 // Charting
 const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
 
+var layout = {}
 var chartData = [
   {
     z: [[1, 90, 30], [20, 1, 60], [30, 60, 1],[2,65,9]],
-    type: 'heatmap'
+    type: 'heatmap',
+    colorscale: 'Jet'
   }
 ];
 
 var inputs= [];
-
 let atkMin = 2e6;
 let atkMax = 7e6;
 let atkScale = 1000;
+const deltaAtk = (atkMax-atkMin)/atkScale
 let yMin = 0.0;
 let yMax = 1.0;
-let yScale= 0.05;
+let yScale= 100;
+const deltaY =(yMax-yMin)/yScale
 window.addEventListener('load', function oi() { Plotly.newPlot('chart', chartData) });
 
-function updateGraph() {
-  chartData[0].z = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
-  Plotly.react('chart', chartData);
+function updateGraph(newArray) {
+  chartData[0].z = newArray
+  layout = {
+  }
+  Plotly.react('chart', chartData,layout);
 }
 function reDraw(){
-  let atkRange = Math.range(atkMin,atkMax, (atkMax-atkMin)/atkScale)
-  let yRange = Math.range(yMin,yMax, (yMax-yMin)/yScale)
+  let atkRange = range(atkMin,atkMax, deltaAtk)
+  let yRange = range(yMin,yMax, deltaY)
+  let datk= inputs["datk"]
+  let dcrit = inputs["dcrit"]
+  let cdmg = inputs["critdmg"]
   var z = [];
   yRange.forEach( (crit, _) =>{
     var line =[];
     atkRange.forEach((atk, _) =>{
-      line.push(formula_crit_atk())
+      line.push(formula_crit_atk(atk,datk,crit, dcrit,cdmg))
     });
     z.push(line);
   })
@@ -154,7 +162,7 @@ function reDraw(){
 
 function run(){
   checkInputs();
-  
+  updateGraph(reDraw())
 }
 // Calculation
 function formula_crit_atk(atk,datk,crit,dcrit,cdmg){
@@ -185,7 +193,7 @@ function addInput(key,input){
 function checkInputs(mode = null){
   let checkArray= ["atk","datk","crit","dcrit","critdmg"]
   checkArray.forEach(str =>{
-    if(!inputs.includes(str)){
+    if(inputs[str] == undefined){
       alert("The "+str+" input needs to be filled !");
       throw new Error("missing input")
     }
