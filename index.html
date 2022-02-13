@@ -1,9 +1,16 @@
-<div class="chart container">
+<!-- <html>
+<header>
+    <script src="./site.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
-    <canvas id="myChart" width="100" height="100"></canvas>
-</div>
-<div id="listEntries">
-    <div id="curve0">
+</header>
+
+<body>
+
+    <div class="chart container">
+        <canvas id="myChart" width="100" height="100"></canvas>
+    </div>
+    <div id="listEntries">
+        <div id="curve0">
             <label>
                 X : <input id="X0" type="text" placeholder="X" />
             </label>
@@ -11,9 +18,34 @@
                 Y : <input id="Y0" type="text" placeholder="Y" />
             </label>
             <button class="btn btn-light" onclick="addCurve(this)">Tracer la courbe</button>
+        </div>
     </div>
-</div>
 
 
 
-<button class="btn btn-danger" onclick="duplicate()">Ajouter une courbe</button>
+    <button class="btn btn-danger" onclick="duplicate()">Ajouter une courbe</button>
+</body>
+
+</html> -->
+
+
+<head>
+    <!-- Load plotly.js into the DOM -->
+    <script src='https://cdn.plot.ly/plotly-2.9.0.min.js'></script>
+    <script src='./site.js'></script>
+</head>
+
+<body>
+    <div id='chart'></div>
+    <label for="inputAtk">Starting Atk</label> <input type="number" id="inputAtk" onblur="addInput('atk',this)" /><Br/>
+    <label for="inputDAtk">Atk variation</label> <input type="number" id="inputDAtk" onblur="addInput('datk',this)" /><Br/>
+    <label for="inputCrit">Starting Crit</label> <input type="number" id="inputCrit" onblur="addInput('crit',this)"/><Br/>
+    <label for="inputDCrit">Crit variation</label> <input type="number" id="inputDCrit" onblur="addInput('dcrit',this)"/><Br/>
+    <label for="inputCritDmg">Critical damage (2 for classes without passives) </label> <input type="number" id="inputCritDmg" value="2" onblur="addInput('critdmg',this)"/><Br/>
+    <button onclick="print('inputCritDmg')">Run</button>
+    <output id="outputResult" hidden="true" type="text"/>
+    <select>
+        <option></option>
+    </select>
+    
+</body>
