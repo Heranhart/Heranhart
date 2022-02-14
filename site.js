@@ -123,10 +123,22 @@ var chartData = [
     z: [[1, 90, 30], [20, 1, 60], [30, 60, 1],[2,65,9]],
     type: 'heatmap',
     colorscale: 'Jet'
+  },
+  {
+    x: [null],
+    y: [null],
+    type: 'scatter',
+    color: 'white'
   }
 ];
 
 var inputs= [];
+// DEBUG
+inputs["atk"] = 4e6
+inputs["crit"] = .09
+inputs["dcrit"] = .0015
+inputs["datk"] = -8e3
+inputs["critdmg"] = 2
 let atkMin = 2e6;
 let atkMax = 7e6;
 let atkScale = 1000;
@@ -135,11 +147,15 @@ let yMin = 0.0;
 let yMax = 1.0;
 let yScale= 100;
 const deltaY =(yMax-yMin)/yScale
-window.addEventListener('load', function oi() { Plotly.newPlot('chart', chartData) });
+window.addEventListener('load', function d() { Plotly.newPlot('chart', chartData) });
 
 function updateGraph(newArray) {
-  chartData[0].z = newArray
+  chartData[0].z = newArray;
+  chartData[0].x = range(atkMin, atkMax, deltaAtk)
   layout = {
+    xaxis:{
+      label:"Oi"
+    }
   }
   Plotly.react('chart', chartData,layout);
 }
