@@ -133,19 +133,25 @@ var chartData = [
 ];
 
 var inputs= [];
+
+var showCrit = true;
 // DEBUG
-inputs["atk"] = 4e6
-inputs["crit"] = .09
-inputs["dcrit"] = .0015
-inputs["datk"] = -8e3
+inputs["atk"] = 0
+inputs["datk"] = 0
+inputs["stat"] = 0
+inputs["dstat"] = 0
+inputs["stat2"] = 0
+inputs["dstat2"] = 0
+inputs["crit"] = 0
+inputs["dcrit"] = 0
 inputs["critdmg"] = 2
-let atkMin = 2e6;
-let atkMax = 7e6;
-let atkScale = 1000;
-const deltaAtk = (atkMax-atkMin)/atkScale
-let yMin = 0.0;
-let yMax = 1.0;
-let yScale= 100;
+// let atkMin = 2e6;
+// let atkMax = 7e6;
+// let atkScale = 1000;
+// const deltaAtk = (atkMax-atkMin)/atkScale
+// let yMin = 0.0;
+// let yMax = 1.0;
+// let yScale= 100;
 const deltaY =(yMax-yMin)/yScale
 window.addEventListener('load', function d() { Plotly.newPlot('chart', chartData) });
 
@@ -178,34 +184,8 @@ function reDraw(){
 
 function run(){
   checkInputs();
-  updateGraph(reDraw())
+  //updateGraph(reDraw())
 }
-// Calculation
-function formula_crit_atk(atk,datk,crit,dcrit,cdmg){
-  return (1 + datk/atk)*(1+dcrit/(1/(cdmg-1) + crit ))
-}
-
-function formula_fd_atk(atk,datk,fd,dfd){
-  return (1 + datk/atk)*(dfd/fd)
-}
-
-// Utils
-function show(id){
-  document.getElementById(id).show()
-}
-
-function hide(id){
-  document.getElementById(id).hide()
-}
-
-function print(id){
-  console.log(document.getElementById(id).value)
-}
-
-function addInput(key,input){
-    this.inputs[key] = input.value != '' ? parseFloat(input.value):0
-}
-
 function checkInputs(mode = null){
   let checkArray= ["atk","datk","crit","dcrit","critdmg"]
   checkArray.forEach(str =>{
@@ -214,4 +194,40 @@ function checkInputs(mode = null){
       throw new Error("missing input")
     }
   })
+}// Calculation
+function formula_crit_atk(atk,datk,crit,dcrit,cdmg){
+  return (1 + datk/atk)*(1+dcrit/(1/(cdmg-1) + crit ))
 }
+
+function formula_fd_atk(atk,datk,fd,dfd){
+  return (1 + datk/atk)*(dfd/fd)
+}
+function formula_atk_from_stat(atk,datk,stat,dstat,statMulti,stat2=0,dstat2=0,stat2Multi=1){
+  return atk + stat*statMulti + stat2*stat2Multi,
+    datk + dstat*statMulti + dstat2*stat2Multi;
+}
+
+//#region Utils
+function show(id){
+  document.getElementById(id).show()
+}
+
+function hide(id){
+  document.getElementById(id).hide()
+}
+
+function get(id){
+  return document.getElementById(id).value;
+}
+
+function set(id,value){
+  document.getElementById(id).value = value;
+}
+function print(id){
+  console.log(document.getElementById(id).value)
+}
+
+function addInput(key,input){
+    this.inputs[key] = input.value != '' ? parseFloat(input.value):0
+}
+//#endregion
