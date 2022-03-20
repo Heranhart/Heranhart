@@ -133,27 +133,27 @@ var chartData = [
 ];
 
 var inputs= [];
-
-var showCrit = true;
+var defaultValue =[];
 // DEBUG
-inputs["atk"] = 0
-inputs["datk"] = 0
-inputs["stat"] = 0
-inputs["dstat"] = 0
-inputs["stat2"] = 0
-inputs["dstat2"] = 0
-inputs["crit"] = 0
-inputs["dcrit"] = 0
-inputs["critdmg"] = 2
-// let atkMin = 2e6;
-// let atkMax = 7e6;
-// let atkScale = 1000;
-// const deltaAtk = (atkMax-atkMin)/atkScale
-// let yMin = 0.0;
-// let yMax = 1.0;
-// let yScale= 100;
-const deltaY =(yMax-yMin)/yScale
-window.addEventListener('load', function d() { Plotly.newPlot('chart', chartData) });
+defaultValue["atk"] = 0
+defaultValue["datk"] = 0
+defaultValue["stat"] = 0
+defaultValue["dstat"] = 0
+defaultValue["statMulti"] = 0
+
+defaultValue["stat2Multi"] = 0
+
+defaultValue["stat2"] = 0
+defaultValue["dstat2"] = 0
+defaultValue["crit"] = 0
+defaultValue["dcrit"] = 0
+defaultValue["cdmg"] = 2
+
+Object.keys(defaultValue).forEach(key => inputs[key] = defaultValue[key]);
+
+
+// const deltaY =(yMax-yMin)/yScale
+// window.addEventListener('load', function d() { Plotly.newPlot('chart', chartData) });
 
 function updateGraph(newArray) {
   chartData[0].z = newArray;
@@ -183,37 +183,38 @@ function reDraw(){
 }
 
 function run(){
-  checkInputs();
-  //updateGraph(reDraw())
+  //check inputs vides
+  var [tempAtk, tempDAtk] = formula_datk_from_stat(inputs)
+  var result = formula(inputs)
+  if(result){
+    set("outputResult", result);
+    show("outputResult")
+  }
 }
-function checkInputs(mode = null){
-  let checkArray= ["atk","datk","crit","dcrit","critdmg"]
-  checkArray.forEach(str =>{
-    if(inputs[str] == undefined){
-      alert("The "+str+" input needs to be filled !");
-      throw new Error("missing input")
-    }
-  })
-}// Calculation
-function formula_crit_atk(atk,datk,crit,dcrit,cdmg){
-  return (1 + datk/atk)*(1+dcrit/(1/(cdmg-1) + crit ))
+function checkInputs(){
+document.cookie
+}
+// Calculation
+function formula(obj){//atk,datk,crit,dcrit,cdmg){
+  var [atk,datk] = formula_datk_from_stat(inputs)
+
+  return (1 + datk/atk)*(1+obj["dcrit"]/
+            (1/(obj["cdmg"]-1) + obj["crit"] ))
 }
 
-function formula_fd_atk(atk,datk,fd,dfd){
-  return (1 + datk/atk)*(dfd/fd)
-}
-function formula_atk_from_stat(atk,datk,stat,dstat,statMulti,stat2=0,dstat2=0,stat2Multi=1){
-  return atk + stat*statMulti + stat2*stat2Multi,
-    datk + dstat*statMulti + dstat2*stat2Multi;
+function formula_datk_from_stat(obj){//atk,datk,stat,dstat,statMulti,stat2=0,dstat2=0,stat2Multi=1){
+  
+  return [obj["atk"] + obj["stat"]*obj["statMulti"] + obj["stat2"]*obj["stat2Multi"],
+    obj["datk"] + obj["dstat"]*obj["statMulti"] + obj["dstat2"]*obj["stat2Multi"]];
 }
 
 //#region Utils
 function show(id){
-  document.getElementById(id).show()
+  document.getElementById(id).hidden = false;
 }
 
 function hide(id){
-  document.getElementById(id).hide()
+  document.getElementById(id).hidden = true;
 }
 
 function get(id){
@@ -229,5 +230,29 @@ function print(id){
 
 function addInput(key,input){
     this.inputs[key] = input.value != '' ? parseFloat(input.value):0
+}
+//#endregion
+//#region Cookie helper
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+function eraseCookie(name) {   
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 //#endregion

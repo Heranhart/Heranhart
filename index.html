@@ -28,33 +28,37 @@
 
                 <label for="inputAtk">Attack Power</label> <input type="number" id="inputAtk"
                     onblur="addInput('atk',this)" /><Br />
-                <label for="inputAtk">STR</label> <input type="number" id="inputSTR"
+                <!-- <label for="inputAtk">STR</label> <input type="number" id="inputSTR"
                     onblur="addInput('str',this)" /><Br />
                 <label for="inputAtk">STR to Patk Ratio</label> <input type="number" id="inputSTRtoPatk"
                     onblur="addInput('strtopatk',this)" /><Br />
                 <label for="inputAtk">AGI</label> <input type="number" id="inputAGI"
                     onblur="addInput('agi',this)" /><Br />
                 <label for="inputAtk">AGI to Patk Ratio</label> <input type="number" id="inputAGItoPatk"
-                    onblur="addInput('agitopatk',this)" /><Br />
+                    onblur="addInput('agitopatk',this)" /><Br /> -->
                 <label for="inputCrit">Critical Rate</label> <input type="number" id="inputCrit"
                     onblur="addInput('crit',this)" placeholder="% or in-game value" /><Br />
                 <label for="inputCritDmg">Critical damage (2 for classes without passives) </label> <input type="number"
-                    id="inputCritDmg" value="2" onblur="addInput('critdmg',this)" /><Br />
+                    id="inputCritDmg" value="2" onblur="addInput('cdmg',this)" /><Br />
             </div>
             <div style="width: 50%">
                 <h2>What you change</h2>
-                <label for="inputDAtk">Attack Variation</label> <input type="number" id="inputDAtk"
-                    onblur="addInput('datk',this)" placeholder="(unchanged)" /><Br />
-                <label for="inputAtk">STR Variation</label> <input type="number" id="inputDSTR"
-                    onblur="addInput('dstr',this)" placeholder="(unchanged)" /><Br />
-                <label for="inputAtk">AGI Variation</label> <input type="number" id="inputDAGI"
-                    onblur="addInput('dagi',this)" placeholder="(unchanged)" /><Br />
-                <label for="inputDCrit">Critical Rate Variation</label> <input type="number" id="inputDCrit"
-                    onblur="addInput('dcrit',this)" placeholder="(unchanged)" /><Br />
+                <label for="inputDAtk">Attack Variation</label> 
+                <input type="number" id="inputDAtk" onblur="addInput('datk',this)" placeholder="(unchanged)" /><Br />
+                <label for="inputDStat">STR Variation</label>
+                <input type="number" id="inputDStat" onblur="addInput('dstat',this)" placeholder="(unchanged)" /><Br />
+                <label for="inputStatMulti">STR to Patk Ratio</label>
+                <input type="number" id="inputStatMulti" onblur="addInput('statMulti',this)" /><Br />
+                <label for="inputDStat2">AGI Variation</label> 
+                <input type="number" id="inputDStat2" onblur="addInput('dstat2',this)" placeholder="(unchanged)" /><Br />
+                <label for="inputStat2Multi">AGI to Patk Ratio</label>
+                <input type="number" id="inputStat2Multi" onblur="addInput('stat2Multi',this)" /><Br />    
+                <label for="inputDCrit">Critical Rate Variation</label> 
+                <input type="number" id="inputDCrit" onblur="addInput('dcrit',this)" placeholder="(unchanged)" /><Br />
             </div>
         </div> 
-        <button onclick='run()'>Run</button>
-        <output id="outputResult" hidden="true" type="text" />
+        <button onclick='run()'>Run</button> <Br/>
+        <output id="outputResult" hidden="true" type="text" value=""/>
     </div>
     <!--
     <label for="inputCritDmg">Critical damage (2 for classes without passives) </label> <input type="number" id="inputCritDmg" value="2" onblur="addInput('critdmg',this)"/><Br/>-->
