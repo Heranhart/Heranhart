@@ -63,6 +63,14 @@ function print(id){
 function addInput(key,input){
     this.inputs[key] = input.value != '' ? parseFloat(input.id.match("(input)D?Crit")? input.value *0.01 : input.value):0
 }
+
+function switchMode(mode){
+  switch(mode){
+    case "patk":
+      break;
+    default: alert("what ?");
+  }
+}
 //#endregion
 //#region Cookie helper
 function setCookie(name,value,days) {
