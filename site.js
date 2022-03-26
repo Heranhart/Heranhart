@@ -10,7 +10,8 @@ defaultValue["crit"] = 0
 defaultValue["dcrit"] = 0
 defaultValue["cdmg"] = 2
 
-Object.keys(defaultValue).forEach(key => inputs[key] = defaultValue[key]);
+// Object.keys(defaultValue).forEach(key => inputs[key] = defaultValue[key]);
+initInputs();
 
 function run(){
   Object.keys(defaultValue).forEach(key =>{ 
@@ -55,7 +56,11 @@ function get(id){
 }
 
 function set(id,value){
-  document.getElementById(id).value = value;
+  var elt =document.getElementById(id);
+  if(elt)
+    elt.value = value;
+  else
+    console.log("Couldn't find "+id);
 }
 function setLabel(id,value){
   document.getElementById(id).innerHTML = value;
@@ -64,9 +69,21 @@ function setLabel(id,value){
 function print(id){
   console.log(document.getElementById(id).value)
 }
+
 function addInput(key,input){
     this.inputs[key] = input.value != '' ? parseFloat(input.id.match("(input)D?Crit")? input.value *0.01 : input.value):0
 }
+function initInputs(){
+  Object.keys(defaultValue).forEach(key => inputs[key] = defaultValue[key]);
+}
+function clearInputs(){
+  initInputs();
+  document.querySelectorAll('input').forEach(input =>{
+    set(input.id,"");
+    set("inputCritDmg",2);
+  })
+}
+
 
 function switchMode(mode){
   switch(mode){
@@ -84,8 +101,12 @@ function switchMode(mode){
       setLabel("labelStatMulti","INT to Matk Ratio")
       hide("blockDStat2")
       break;
-    default: alert("Unknown mode. Stop trying to break everything, please !");
+    default: 
+      alert("Unknown mode. Stop trying to break everything, please !");
+      break;
   }
+  clearInputs();
+  hide("outputResult")
 }
 //#endregion
 //#region Cookie helper
