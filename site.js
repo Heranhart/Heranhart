@@ -57,6 +57,10 @@ function get(id){
 function set(id,value){
   document.getElementById(id).value = value;
 }
+function setLabel(id,value){
+  document.getElementById(id).innerHTML = value;
+}
+
 function print(id){
   console.log(document.getElementById(id).value)
 }
@@ -67,8 +71,20 @@ function addInput(key,input){
 function switchMode(mode){
   switch(mode){
     case "patk":
+      setLabel("labelAtk","Attack Power");
+      setLabel("labelDAtk","Attack Power Variation")
+      setLabel("labelDStat","STR Variation")
+      setLabel("labelStatMulti","STR to Patk Ratio")
+      show("blockDStat2")
       break;
-    default: alert("what ?");
+    case "matk":
+      setLabel("labelAtk","Magic Attack");
+      setLabel("labelDAtk","Magic Attack Variation")
+      setLabel("labelDStat","INT Variation")
+      setLabel("labelStatMulti","INT to Matk Ratio")
+      hide("blockDStat2")
+      break;
+    default: alert("Unknown mode. Stop trying to break everything, please !");
   }
 }
 //#endregion
