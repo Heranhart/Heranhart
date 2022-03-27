@@ -9,6 +9,10 @@ defaultValue["dstat2"] = 0
 defaultValue["crit"] = 0
 defaultValue["dcrit"] = 0
 defaultValue["cdmg"] = 2
+defaultValue["fd"]=0;
+defaultValue["dfd"]=0;
+defaultValue["elmt"]=0;
+defaultValue["delmt"]=0;
 
 // Object.keys(defaultValue).forEach(key => inputs[key] = defaultValue[key]);
 initInputs();
@@ -42,13 +46,45 @@ function formula_datk_from_stat(obj){
   return obj["datk"] + obj["dstat"]*obj["statMulti"] + obj["dstat2"]*obj["stat2Multi"];
 }
 
+function switchMode(mode){
+  switch(mode){
+    case "patk":
+      setLabel("labelAtk","Attack Power");
+      setLabel("labelDAtk","Attack Power Variation")
+      setLabel("labelDStat","STR Variation")
+      setLabel("labelStatMulti","STR to Patk Ratio")
+      show("blockDStat2")
+      break;
+    case "matk":
+      setLabel("labelAtk","Magic Attack");
+      setLabel("labelDAtk","Magic Attack Variation")
+      setLabel("labelDStat","INT Variation")
+      setLabel("labelStatMulti","INT to Matk Ratio")
+      hide("blockDStat2")
+      break;
+    default: 
+      alert("Unknown mode. Stop trying to break everything, please !");
+      break;
+  }
+  clearInputs();
+  hide("outputResult")
+}
 //#region Utils
-function show(id){
-  document.getElementById(id).hidden = false;
+function show(id){  
+  var obj =document.getElementById(id);
+  if(obj) 
+    obj.hidden = false;
+  else
+    document.getElementsByClassName(id).forEach(e => e.hidden= false);
 }
 
 function hide(id){
-  document.getElementById(id).hidden = true;
+  var obj =document.getElementById(id);
+  if(obj) 
+    obj.hidden = true;
+  else
+    document.getElementsByClassName(id).forEach(e => e.hidden= true);
+  
 }
 
 function get(id){
@@ -78,36 +114,36 @@ function initInputs(){
 }
 function clearInputs(){
   initInputs();
-  document.querySelectorAll('input').forEach(input =>{
+  document.getElementById("inputs").querySelectorAll('input').forEach(input =>{
     set(input.id,"");
     set("inputCritDmg",2);
   })
 }
 
-
-function switchMode(mode){
-  switch(mode){
-    case "patk":
-      setLabel("labelAtk","Attack Power");
-      setLabel("labelDAtk","Attack Power Variation")
-      setLabel("labelDStat","STR Variation")
-      setLabel("labelStatMulti","STR to Patk Ratio")
-      show("blockDStat2")
+function toggle(target, value){
+  var targets = new Array();
+  switch(target){
+    case 'crit':
+      targets.push("blockcrit","blockdcrit")
       break;
-    case "matk":
-      setLabel("labelAtk","Magic Attack");
-      setLabel("labelDAtk","Magic Attack Variation")
-      setLabel("labelDStat","INT Variation")
-      setLabel("labelStatMulti","INT to Matk Ratio")
-      hide("blockDStat2")
+    case 'fd':
+      targets.push("blockfd","blockdfd")
       break;
-    default: 
-      alert("Unknown mode. Stop trying to break everything, please !");
+    case 'elmt':
+      targets.push("blockelmt","blockdelmt")
+      break; 
+    case 'stat':
+      targets.push("blockstat")
       break;
   }
-  clearInputs();
-  hide("outputResult")
+  targets.forEach(t => {
+    if(value)
+      show(t);
+    else
+      hide(t);
+  })
 }
+
 //#endregion
 //#region Cookie helper
 function setCookie(name,value,days) {
